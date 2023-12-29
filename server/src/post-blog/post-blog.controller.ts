@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Req, UseGuards } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Post, Req, UseGuards } from "@nestjs/common";
 import { postblogservice } from "./post-blog.service";
 import { Request } from "express";
 import { AuthGuard } from "@nestjs/passport";
@@ -25,5 +25,11 @@ export class postblogcontroller {
     @Get("yourpost")
     getyourpost(@Req() req: Request) {
         return this.blogpostservice.getyourpost(req);
+    }
+
+    @UseGuards(PostGuard)
+    @Delete("post")
+    Deleteyourpost(@Req() req: Request) {
+        return this.blogpostservice.Deleteyourpost(req)
     }
 }

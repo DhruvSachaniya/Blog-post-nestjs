@@ -52,9 +52,9 @@ export class postblogservice {
 
     const { id } = req.user as User;
 
-    const yourpost = await this.prisma.user.findUnique({
+    const yourpost = await this.prisma.post.findMany({
       where: {
-        id: id
+        authorId: id
       }
     })
 
@@ -63,5 +63,44 @@ export class postblogservice {
     }
 
     return yourpost;
+  }
+
+  async Deleteyourpost(req: Request) {
+    
+    const { id } = req.user as User;
+
+    const { post_id } = req.body;
+
+    const post = await this.prisma.post.findFirst({
+      where: {
+        id: Number(post_id)
+      }
+    })
+
+    if(!post) {
+      throw new HttpException("cant find post!", HttpStatus.FORBIDDEN)
+    }
+    
+    //compare it to author id
+    if(post.authorId === id) {
+      const deletepost = await this.prisma.post.deleteMany({
+        where: {
+          id: Number(post_id)
+        }
+      })
+
+      if(!deletepost) {
+        throw new HttpException("cant find", HttpStatus.FORBIDDEN)
+      }
+
+      return {
+        meassge: "post deleted!",
+        deletepost
+      };
+    } 
+
+    return {
+      message : "can't delete!"
+    }
   }
 }
