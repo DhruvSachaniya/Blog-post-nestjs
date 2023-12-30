@@ -3,8 +3,8 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import { useNavigate } from 'react-router-dom';
 
-export default function LoginPage() {
-    
+export default function RegisterPage() {
+
     const [ values, setvalue ] = useState({
         username: "",
         email: ""
@@ -26,7 +26,7 @@ export default function LoginPage() {
 
         try {
             const response = await axios({
-                url: "auth/signin",
+                url: "auth/signup",
                 method: "post",
                 headers: {
                     "Content-Type": "application/json"
@@ -40,13 +40,9 @@ export default function LoginPage() {
                 username: "",
                 email: ""
             })
-            console.log(response);
             if(response.status === 201) {
-                toast.success("Login succesfully!");
+                toast.success("register succesfully!");
                 navigate("/");
-                if(response.data.access_token) {
-                    localStorage.setItem("jwt_token", response.data.access_token)
-                }
             }
             
         } catch (error) {
@@ -54,12 +50,19 @@ export default function LoginPage() {
         }
     }
     
-    return (
+    return(
         <div class="wrapper">
 
             <div class="login-box">
                 <form onSubmit={handlesubmit}>
-                    <h2>Login</h2>
+                    <h2>Register</h2>
+                    <div class="input-box">
+                        <span class="icon">
+                            <ion-icon name="lock-closed"></ion-icon>
+                        </span>
+                        <input type="text" name="username" value={values.username} onChange={handlechange} required />
+                        <label>Name</label>
+                    </div>
 
                     <div class="input-box">
                         <span class="icon">
@@ -69,18 +72,10 @@ export default function LoginPage() {
                         <label>Email</label>
                     </div>
 
-                    <div class="input-box">
-                        <span class="icon">
-                            <ion-icon name="lock-closed"></ion-icon>
-                        </span>
-                        <input type="text" name="username" value={values.username} onChange={handlechange} required />
-                        <label>Name</label>
-                    </div>
-                    
-                    <button type="submit">Login</button>
+                    <button type="submit">Register</button>
 
                     <div class="register-link">
-                        <p>Don't have an account? <a href="/Register">Register</a></p>
+                        <p>Haven't Login yet? <a href="/">Login</a></p>
                     </div>
                 </form>
             </div>
