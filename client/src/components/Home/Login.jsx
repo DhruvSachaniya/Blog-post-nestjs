@@ -40,10 +40,9 @@ export default function LoginPage() {
                 username: "",
                 email: ""
             })
-            console.log(response);
             if(response.status === 201) {
                 toast.success("Login succesfully!");
-                navigate("/");
+                navigate("/blog");
                 if(response.data.access_token) {
                     localStorage.setItem("jwt_token", response.data.access_token)
                 }
